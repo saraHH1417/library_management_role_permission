@@ -35,6 +35,7 @@
                             </li>
                         @endif
                     @else
+                        <li><a class="nav-link" href="{{ route('activities.index') }}">Activities</a></li>
                         @can('book-list')
                             <li><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
                         @endcan
@@ -53,9 +54,7 @@
                         @can('permission-list')
                             <li><a class="nav-link" href="{{ route('permissions.index') }}">Permission</a></li>
                         @endcan
-                        @can('post-list')
-                            <li><a class="nav-link" href="{{ route('posts.index') }}">Posts</a></li>
-                        @endcan
+
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}

@@ -16,6 +16,12 @@ class CreatePublishersTable extends Migration
         Schema::create('publishers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name' , 255);
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

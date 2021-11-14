@@ -18,7 +18,13 @@ class CreateBooksTable extends Migration
             $table->string('name' , 255);
             $table->unsignedInteger('author_id');
             $table->unsignedInteger('publisher_id');
+            $table->unsignedInteger('user_id');
 
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->foreign('author_id')
                 ->references('id')
                 ->on('authors')

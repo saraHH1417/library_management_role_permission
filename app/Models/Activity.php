@@ -9,6 +9,7 @@ class Activity extends Model
 {
     use HasFactory;
 
+    protected $table = 'activity';
     protected $fillable = ['message' , 'user_id'];
     public function user()
     {

@@ -9,13 +9,9 @@ class ActivityController extends Controller
 {
     public function index()
     {
-        $activities = Activity::with('user')->get();
-        foreach ($activities as $activity) {
-            $message = explode($activity->message, ';');
-            $activity->type = $message[0];
-            $activity->content_model = $message[1];
-            $activity->model_id = $message[2];
-        }
+
+        $activities = Activity::with('user')->latest()->get();
+
         return view('activities' , ['activities' => $activities]);
     }
 }

@@ -46,4 +46,19 @@ class User extends Authenticatable
     public function Activities(){
         return $this->hasMany(Activity::class);
     }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+
+    public function publishers()
+    {
+        return $this->hasMany(Publisher::class);
+    }
+
+    public function authors()
+    {
+        return $this->hasMany(Author::class);
+    }
 }

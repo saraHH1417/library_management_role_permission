@@ -15,7 +15,9 @@ class CreateActivityTable extends Migration
     {
         Schema::create('activity', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('message');
+            $table->string('change_type');
+            $table->string('model');
+            $table->string('model_id');
             $table->unsignedInteger('user_id');
 
             $table->foreign('user_id')

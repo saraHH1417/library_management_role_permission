@@ -2,13 +2,18 @@
 
 @section('content')
     @if( count($activities) >0 )
-        @foreach( $activitives as $activity)
+        @foreach( $activities as $activity)
             <h2>
-                User {{ $activity->user->name }} , {{ $activity->type }} , {{ $activity->content_model }}
-                <a
-                    href="{{ route("{$activity->content_model}s/show" , ["{$activity->content_model}" => $activity->model_id]) }} ">
-                    link
+                <a href="{{ route('users.show' , $activity->user_id) }}">
+                    User {{ $activity->user->name }}
                 </a>
+                with id {{ $activity->user_id }}
+                {{ $activity->change_type }} ,
+                <a href="{{ route("{$activity->model}s.show" , $activity->model_id) }} ">
+                    {{ $activity->model }}
+                </a>
+                at {{ $activity->created_at->diffForHumans() }}
+
             </h2>
             <hr>
         @endforeach

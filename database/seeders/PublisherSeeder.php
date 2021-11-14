@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Publisher;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class PublisherSeeder extends Seeder
@@ -14,6 +15,10 @@ class PublisherSeeder extends Seeder
      */
     public function run()
     {
-        Publisher::factory(20)->create();
+        $users = User::all();
+        Publisher::factory(20)->make()->each(function($publisher) use($users){
+            $publisher->user_id = $users->random()->id;
+            $publisher->save();
+        });
     }
 }

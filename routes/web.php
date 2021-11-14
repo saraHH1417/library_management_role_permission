@@ -41,4 +41,4 @@ Route::resource('/books' , \App\Http\Controllers\BookController::class);
 Route::resource('/authors' , \App\Http\Controllers\AuthorController::class);
 Route::resource('/publishers' , \App\Http\Controllers\PublisherController::class);
 
-
+Route::get('/activities' , [\App\Http\Controllers\ActivityController::class , 'index'])->name('activities.index');
