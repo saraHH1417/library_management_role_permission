@@ -55,12 +55,12 @@ class ApiPublishersController extends Controller
      */
     public function show($id)
     {
-        $author = Publisher::find($id);
-        if($author){
-            return $author;
+        $publisher = Publisher::find($id);
+        if($publisher){
+            return $publisher;
         }else {
             return response()->json([
-                'message' => "author doesn't exist"
+                'message' => "publisher doesn't exist"
             ]);
         }
     }
@@ -86,7 +86,7 @@ class ApiPublishersController extends Controller
         }
         if($publisher->update($validator->validated())){
             return response()->json([
-                'message' => 'author updated successfully'
+                'message' => 'publisher updated successfully'
             ]);
         }else {
             return response()->json([
