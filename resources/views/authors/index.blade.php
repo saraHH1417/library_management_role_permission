@@ -21,6 +21,7 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
+                            <th>Books Number</th>
                             <th width="280px">Action</th>
                         </tr>
                         </thead>
@@ -29,6 +30,7 @@
                             <tr>
                                 <td>{{ $author->id }}</td>
                                 <td>{{ $author->name }}</td>
+                                <td> {{ count($author->books) }}</td>
                                 <td>
                                     <a class="btn btn-success" href="{{ route('authors.show',$author->id) }}">Show</a>
                                     @can('author-edit')

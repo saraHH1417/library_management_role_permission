@@ -65,7 +65,7 @@ class PublisherController extends Controller
      */
     public function show($id)
     {
-        $publisher = Publisher::findOrFail($id);
+        $publisher = Publisher::with('books')->findOrFail($id);
 
         return view('publishers.show', compact('publisher'));
     }

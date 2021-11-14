@@ -20,6 +20,13 @@
                         <strong>Name:</strong>
                         {{ $publisher->name }}
                     </div>
+                    <h3>Books</h3>
+                    @if($publisher->books)
+                        @foreach( $publisher->books as $book)
+                            <h5>name: {{ $book->name }} *** author name: {{ $book->author->name }}
+                                *** author id: {{ $book->author->id }} </h5>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

@@ -22,11 +22,13 @@ class CreateBooksTable extends Migration
             $table->foreign('author_id')
                 ->references('id')
                 ->on('authors')
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreign('publisher_id')
                 ->references('id')
                 ->on('publishers')
+                ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->timestamps();
