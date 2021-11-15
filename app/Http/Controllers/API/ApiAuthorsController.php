@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\ApiAuthorStore;
 use App\Http\Resources\AuthorsCollection;
 use App\Models\Author;
 use Illuminate\Http\Request;
@@ -26,27 +27,17 @@ class ApiAuthorsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ApiAuthorStore $request)
     {
 
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'name'     => 'required'
+        $validatedData = $request->validated();
+
+        Author::create($validatedData);
+
+        return response()->json([
+            'message' => 'author created successfully'
         ]);
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => $validator->errors()
-            ]);
-        }
-        if(Author::create($validator->validated())){
-            return response()->json([
-                'message' => 'author created successfully'
-            ]);
-        }else {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
     }
 
     /**
@@ -74,28 +65,17 @@ class ApiAuthorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ApiAuthorStore $request, $id)
     {
 
-        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
-            'name'     => 'required'
-        ]);
         $author = Author::findOrFail($id);
+        $validatedData = $request->validated();
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => $validator->errors()
-            ]);
-        }
-        if($author->update($validator->validated())){
-            return response()->json([
-                'message' => 'author updated successfully'
-            ]);
-        }else {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
+        $author->update($validatedData);
+
+        return response()->json([
+            'message' => 'author updated successfully'
+        ]);
     }
 
     /**

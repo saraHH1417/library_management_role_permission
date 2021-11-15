@@ -20,15 +20,18 @@
                 </div>
                 <div class="card-body">
                     {!! Form::open(array('route' => 'books.store', 'method'=>'post')) !!}
+                    <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
                     <div class="form-group">
                         <strong>name:</strong>
-                        {!! Form::text('name', null, array('placeholder' => 'name','class' => 'form-control')) !!}
+                        {!! Form::text('name',  old('name' , $book->name ?? '') , array('placeholder' => 'name','class' => 'form-control')) !!}
                     </div>
                     <div class="form-group">
                         <label for="author_id">Author</label>
-                        <select name="author_id" id="">
+                        <select name="author_id" id="author_id">
                             @foreach($authors as $author)
-                                <option value=" {{ $author->id }}"> {{ $author->name }}</option>
+                                <option value=" {{ $author->id }}">
+                                    {{ $author->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>

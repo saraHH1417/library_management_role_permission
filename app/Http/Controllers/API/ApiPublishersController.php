@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\ApiStorePublisher;
 use App\Http\Resources\PublishersCollection;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
@@ -25,26 +26,15 @@ class ApiPublishersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ApiStorePublisher $request)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
-            'name'     => 'required'
-        ]);
+        $validatedData = $request->validated();
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => $validator->errors()
-            ]);
-        }
-        if(Publisher::create($validator->validated())){
-            return response()->json([
-                'message' => 'publisher created successfully'
-            ]);
-        }else {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
+        $publisher = Publisher::create($validatedData);
+
+        return response()->json([
+            'message' => 'Publisher created successfully'
+        ]);
     }
 
     /**
@@ -72,27 +62,17 @@ class ApiPublishersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ApiStorePublisher $request, $id)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
-            'name'     => 'required'
-        ]);
-        $publisher = Publisher::findOrFail($id);
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => $validator->errors()
-            ]);
-        }
-        if($publisher->update($validator->validated())){
-            return response()->json([
-                'message' => 'publisher updated successfully'
-            ]);
-        }else {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
+        $publisher = Publisher::findOrFail($id);
+        $validatedData = $request->validated();
+
+        $publisher->update($validatedData);
+
+        return response()->json([
+            'message' => 'Publisher updated successfully'
+        ]);
     }
 
     /**

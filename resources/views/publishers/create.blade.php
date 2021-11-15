@@ -20,13 +20,10 @@
                 </div>
                 <div class="card-body">
                     {!! Form::open(array('route' => 'publishers.store', 'method'=>'post')) !!}
+                    <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
                     <div class="form-group">
-                        <strong>Title:</strong>
-                        {!! Form::text('title', null, array('placeholder' => 'Title','class' => 'form-control')) !!}
-                    </div>
-                    <div class="form-group">
-                        <strong>Body:</strong>
-                        {!! Form::textarea('body', null, array('placeholder' => 'Body','class' => 'form-control')) !!}
+                        <strong>Name:</strong>
+                        {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     {!! Form::close() !!}

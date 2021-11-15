@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Activity;
 use App\Models\Author;
 use App\Models\User;
 use Carbon\Carbon;
@@ -24,13 +25,11 @@ class AuthorObserver
 
     public function created(Author $author)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "created",
             'model' => 'author',
             'model_id' => $author->id,
-            'user_id' => $author->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $author->user_id
         ]);
     }
 
@@ -42,13 +41,11 @@ class AuthorObserver
      */
     public function updated(Author $author)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "updated",
             'model' => 'author',
             'model_id' => $author->id,
-            'user_id' => $this->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $this->user_id
         ]);
     }
 
@@ -60,13 +57,11 @@ class AuthorObserver
      */
     public function deleted(Author $author)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "deleted",
             'model' => 'author',
             'model_id' => $author->id,
-            'user_id' => $this->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $this->user_id
         ]);
     }
 

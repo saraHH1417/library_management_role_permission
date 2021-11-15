@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\ApiStoreBook;
+use App\Http\Requests\StoreBook;
 use App\Http\Resources\BooksCollection;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiBooksController extends Controller
 {
@@ -16,7 +19,8 @@ class ApiBooksController extends Controller
      */
     public function index()
     {
-        return new BooksCollection(Book::all());
+        $books = Book::all();
+        return new BooksCollection($books);
     }
 
     /**
@@ -25,29 +29,15 @@ class ApiBooksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ApiStoreBook $request)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
-            'name'     => 'required',
-            'author_id' => 'required',
-            'publisher_id' => 'required',
-            'quantity' => 'required'
+        $validatedData = $request->validated();
+        Book::create($validatedData);
+
+        return response()->json([
+            'message' => 'book created successfully'
         ]);
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => $validator->errors()
-            ]);
-        }
-        if(Book::create($validator->validated())){
-            return response()->json([
-                'message' => 'book created successfully'
-            ]);
-        }else {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
     }
 
     /**
@@ -75,32 +65,17 @@ class ApiBooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ApiStoreBook $request, $id)
     {
-        $validator = \Illuminate\Support\Facades\Validator::make(request()->all(), [
-            'name'     => 'required',
-            'author_id' => 'required',
-            'publisher_id' => 'required',
-            'quantity' => 'required'
-        ]);
+
         $book = Book::findOrFail($id);
+        $validatedData = $request->validated();
+        $book->update($validatedData);
 
-        if($validator->fails()){
-            return response()->json([
-                'message' => $validator->errors()
-            ]);
-        }
-        if($book->update($validator->validated())){
-            return response()->json([
-                'message' => 'book updated successfully'
-            ]);
-        }else {
-            return response()->json([
-                'message' => 'error'
-            ]);
-        }
+        return response()->json([
+            'message' => 'book created successfully'
+        ]);
     }
-
     /**
      * Remove the specified resource from storage.
      *

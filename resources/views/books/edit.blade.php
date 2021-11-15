@@ -20,6 +20,7 @@
                 </div>
                 <div class="card-body">
                     {!! Form::model($book, ['route' => ['books.update', $book->id], 'method'=>'PATCH']) !!}
+                    <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
                     <div class="form-group">
                         <strong>Name:</strong>
                         {!! Form::text('name', $book->name, array('placeholder' => 'Name','class' => 'form-control')) !!}

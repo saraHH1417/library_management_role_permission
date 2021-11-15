@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApiStoreBook;
+use App\Http\Requests\StoreBook;
 use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 class BookController extends Controller
 {
@@ -46,17 +47,10 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBook $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'author_id'=> 'required',
-            'publisher_id'=> 'required',
-            'quantity' => 'required'
-        ]);
-        $input = $request->except(['_token']);
-
-        $book = Book::create($input);
+        $validatedData  = $request->validated();
+        $book = Book::create($validatedData);
 
         return redirect()->route('books.show' , ['book' => $book->id])
             ->with('success','Book created successfully.');
@@ -96,18 +90,13 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreBook $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'author_id'=> 'required',
-            'publisher_id'=> 'required',
-            'quantity' => 'required'
-        ]);
+        $validatedData = $request->validated();
 
-        $book = Book::find($id);
+        $book = Book::findOrFail($id);
 
-        $book->update($request->all());
+        $book->update($validatedData);
 
         return redirect()->route('books.index')
             ->with('success', 'Book updated successfully.');

@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
+    public function __constructor()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
 
@@ -14,4 +18,5 @@ class ActivityController extends Controller
 
         return view('activities' , ['activities' => $activities]);
     }
+
 }

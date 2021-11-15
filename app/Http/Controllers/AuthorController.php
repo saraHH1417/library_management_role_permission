@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\API\ApiAuthorStore;
+use App\Http\Requests\AuthorStore;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthorController extends Controller
 {
@@ -43,17 +46,14 @@ class AuthorController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AuthorStore $request)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
-        $input = $request->except(['_token']);
+        $validatedData = $request->validated();
 
-        $author = Author::create($input);
+        $author = Author::create($validatedData);
 
         return redirect()->route('authors.show', ['author' => $author->id])
-            ->with('success', 'Post created successfully.');
+            ->with('success', 'Author created successfully.');
     }
 
     /**
@@ -88,15 +88,15 @@ class AuthorController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AuthorStore $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
 
-        $author = Author::find($id);
+        $author = Author::findOrFail($id);
 
-        $author->update($request->all());
+        $validatedData = $request->validated();
+
+        $author->update($validatedData);
+
 
         return redirect()->route('authors.index')
             ->with('success', 'author updated successfully.');

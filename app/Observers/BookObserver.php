@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Activity;
 use App\Models\Book;
 use App\Models\User;
 use Carbon\Carbon;
@@ -23,13 +24,11 @@ class BookObserver
      */
     public function created(Book $book)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "created",
             'model' => 'book',
             'model_id' => $book->id,
-            'user_id' => $book->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $book->user_id
         ]);
     }
 
@@ -41,13 +40,11 @@ class BookObserver
      */
     public function updated(Book $book)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "updated",
             'model' => 'book',
             'model_id' => $book->id,
-            'user_id' => $this->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $this->user_id
         ]);
     }
 
@@ -59,14 +56,14 @@ class BookObserver
      */
     public function deleted(Book $book)
     {
-        DB::table('activity')->insert([
+
+        Activity::create([
             'change_type' => "deleted",
             'model' => 'book',
             'model_id' => $book->id,
-            'user_id' => $this->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $this->user_id
         ]);
+
     }
 
     /**

@@ -10,7 +10,7 @@ class Activity extends Model
     use HasFactory;
 
     protected $table = 'activity';
-    protected $fillable = ['message' , 'user_id'];
+    protected $fillable = ['change_type' , 'model' , 'model_id' , 'user_id'];
     public function user()
     {
         return $this->belongsTo(User::class);

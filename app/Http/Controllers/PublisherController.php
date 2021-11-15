@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePublisher;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PublisherController extends Controller
 {
@@ -44,17 +46,14 @@ class PublisherController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePublisher $request)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
-        $input = $request->except(['_token']);
+        $validatedData = $request->validated();
 
-        $publisher = Publisher::create($input);
+        $publisher = Publisher::create($validatedData);
 
         return redirect()->route('publishers.show', ['publisher' => $publisher->id])
-            ->with('success', 'Post created successfully.');
+            ->with('success', 'Publisher created successfully.');
     }
 
     /**
@@ -90,15 +89,12 @@ class PublisherController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePublisher $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
+        $publisher = Publisher::findOrFail($id);
+        $validatedData = $request->validated();
 
-        $publisher = Publisher::find($id);
-
-        $publisher->update($request->all());
+        $publisher->update($validatedData);
 
         return redirect()->route('publishers.index')
             ->with('success', 'publisher updated successfully.');

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Activity;
 use App\Models\Publisher;
 use App\Models\User;
 use Carbon\Carbon;
@@ -24,13 +25,11 @@ class PublisherObserver
      */
     public function created(Publisher $publisher)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "created",
             'model' => 'publisher',
             'model_id' => $publisher->id,
-            'user_id' => $publisher->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $publisher->user_id
         ]);
     }
 
@@ -42,13 +41,11 @@ class PublisherObserver
      */
     public function updated(Publisher $publisher)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "updated",
             'model' => 'publisher',
             'model_id' => $publisher->id,
-            'user_id' => $this->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $this->user_id
         ]);
     }
 
@@ -60,13 +57,11 @@ class PublisherObserver
      */
     public function deleted(Publisher $publisher)
     {
-        DB::table('activity')->insert([
+        Activity::create([
             'change_type' => "deleted",
             'model' => 'publisher',
             'model_id' => $publisher->id,
-            'user_id' => $this->user_id,
-            'created_at' => Carbon::now()->toDateTime(),
-            'updated_at' => Carbon::now()->toDateTime()
+            'user_id' => $this->user_id
         ]);
     }
 

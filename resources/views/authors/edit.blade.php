@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body">
                     {!! Form::model($author, ['route' => ['authors.update', $author->id], 'method'=>'PATCH']) !!}
-                    {!! Form::model($author, ['route' => ['authors.update', $author->id], 'method'=>'PATCH']) !!}
+                    <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
                     <div class="form-group">
                         <strong>Name:</strong>
                         {!! Form::text('name', $author->name , array('placeholder' => 'name','class' => 'form-control')) !!}

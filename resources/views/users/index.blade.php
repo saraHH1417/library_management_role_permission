@@ -9,9 +9,9 @@
             @endif
             <div class="card">
                 <div class="card-header">Users
-                    <span class="float-right">
-                    <a class="btn btn-primary" href="{{ route('users.create') }}">New User</a>
-                </span>
+{{--                    <span class="float-right">--}}
+{{--                    <a class="btn btn-primary" href="{{ route('users.create') }}">New User</a>--}}
+{{--                    </span>--}}
                 </div>
                 <div class="card-body">
                     <table class="table">

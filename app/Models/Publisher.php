@@ -10,7 +10,7 @@ class Publisher extends Model
 {
     use HasFactory , SoftDeletes;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name' , 'user_id'];
 
     public function books()
     {

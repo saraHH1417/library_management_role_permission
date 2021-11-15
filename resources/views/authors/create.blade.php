@@ -20,6 +20,7 @@
                 </div>
                 <div class="card-body">
                     {!! Form::open(array('route' => 'authors.store', 'method'=>'post')) !!}
+                    <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
                     <div class="form-group">
                         <strong>Name:</strong>
                         {!! Form::text('name', null, array('placeholder' => 'name','class' => 'form-control')) !!}
