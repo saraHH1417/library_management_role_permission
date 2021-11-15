@@ -24,7 +24,10 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'bail|required|min:2|max:200',
+            'email' => 'required|unique:users',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password'
         ];
     }
 }

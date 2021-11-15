@@ -6,6 +6,8 @@ use App\Http\Requests\StoreUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -47,17 +49,15 @@ class UserController extends Controller
      */
     public function store(StoreUser $request)
     {
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
 
-//        $input = $request->all();
-//        $input['password'] = Hash::make($input['password']);
-//
-//        $user = User::create($input);
+        $password = $request->input('password');
+        $validatedData['password'] = Hash::make($password);
 
         $user = User::create($validatedData);
         $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.show' , ['user' , $user->id])
+        return redirect()->route('users.show' , $user->id)
             ->with('success' , 'user created successfully');
     }
 

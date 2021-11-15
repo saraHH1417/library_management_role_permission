@@ -21,6 +21,7 @@
 
                 <div class="card-body">
                     {!! Form::open(array('route' => 'users.store','method'=>'POST')) !!}
+                    @csrf
                     <div class="form-group">
                         <strong>Name:</strong>
                         {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
