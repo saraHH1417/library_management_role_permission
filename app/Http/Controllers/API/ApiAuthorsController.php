@@ -18,7 +18,8 @@ class ApiAuthorsController extends Controller
      */
     public function index()
     {
-        return new AuthorsCollection(Author::all());
+        $authors = Author::all();
+        return new AuthorsCollection($authors);
     }
 
     /**
@@ -49,13 +50,8 @@ class ApiAuthorsController extends Controller
     public function show($id)
     {
         $author = Author::find($id);
-        if($author){
-            return $author;
-        }else {
-            return response()->json([
-                'message' => "author doesn't exist"
-            ]);
-        }
+
+        return $author;
     }
 
     /**
@@ -86,22 +82,12 @@ class ApiAuthorsController extends Controller
      */
     public function destroy($id)
     {
-        $author = Author::find($id);
-        if($author) {
-            if ($author = $author->delete()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Author deleted successfully'
-                ]);
-            }else{
-                return response()->json([
-                    'message' => 'an error has occurred'
-                ]);
-            }
-        }else{
-            return response()->json([
-                'message' => 'publisher not found'
-            ]);
-        }
+        $author = Author::find($id)->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Author deleted successfully'
+        ]);
+
     }
 }

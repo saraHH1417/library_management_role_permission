@@ -57,29 +57,22 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
-            $role = Role::where('name', 'admin')->first();
-            $user->assignRole($role);
+                if($user->name === 'admin'){
 
-            $permissions = Permission::pluck('id', 'id')->all();
+                    $user->assignRole('admin');
 
-            $role->syncPermissions($permissions);
-//            $role = Role::where('name', 'auditor')->first();
-//
-//            $permissions = Permission::pluck('id', 'id')->all();
-//
-//            $role->syncPermissions($permissions);
-//
-//            $role = Role::where('name', 'creator')->first();
-//
-//            $permissions = Permission::pluck('id', 'id')->all();
-//
-//            $role->syncPermissions($permissions);
-//
-//            $role = Role::where('name', 'deleter')->first();
-//
-//            $permissions = Permission::pluck('id', 'id')->all();
-//
-//            $role->syncPermissions($permissions);
+                }elseif($user->name === 'deleter'){
+
+                    $user->assignRole('deleter');
+
+                }elseif($user->name === 'auditor'){
+
+                    $user->assignRole('auditor');
+
+                }elseif($user->name === 'creator'){
+
+                    $user->assignRole('creator');
+                }
         });
      }
 

@@ -19,7 +19,7 @@
                 </span>
                 </div>
                 <div class="card-body">
-                    {!! Form::open(array('route' => 'books.store', 'method'=>'post')) !!}
+                    {!! Form::open(['route' => 'books.store', 'method'=>'post', 'enctype' => 'multipart/form-data']) !!}
                     <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
                     <div class="form-group">
                         <strong>name:</strong>
@@ -46,6 +46,10 @@
                     <div class="form-group">
                         <label for="quantity">Qty</label>
                         <input type="number" name="quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" name="image" id="image">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     {!! Form::close() !!}

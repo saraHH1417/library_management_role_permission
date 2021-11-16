@@ -7,6 +7,7 @@ use App\Http\Requests\StoreBook;
 use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\HasMedia;
 
 class BookController extends Controller
 {
@@ -50,8 +51,12 @@ class BookController extends Controller
     public function store(StoreBook $request)
     {
         $validatedData  = $request->validated();
+
         $book = Book::create($validatedData);
 
+        if($request->hasFile('image')  && $request->file('image')->isValid()){
+            $book->addMediaFromRequest('image')->toMediaCollection('BooksImages');
+        }
         return redirect()->route('books.show' , ['book' => $book->id])
             ->with('success','Book created successfully.');
     }

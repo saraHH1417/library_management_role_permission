@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
@@ -69,9 +70,10 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        $permission = Permission::find($id);
+        $allRoles = Role::all();
+        $permission = Permission::with('roles')->find($id);
 
-        return view('permissions.show', compact('permission'));
+        return view('permissions.show', compact('permission' , 'allRoles'));
     }
 
     /**
