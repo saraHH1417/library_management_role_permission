@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\RoleSpatie;
+use Database\Factories\RoleSpatieFactory;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleTableSeeder extends Seeder
@@ -14,10 +17,10 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'creator']);
-        Role::create(['name' => 'auditor']);
-        Role::create(['name' => 'deleter']);
+        $adminRole = RoleSpatie::factory()->adminRole()->create();
+        $creatorRole = RoleSpatie::factory()->creatorRole()->create();
+        $auditorRole = RoleSpatie::factory()->auditorRole()->create();
+        $deleterRole = RoleSpatie::factory()->deleterRole()->create();
 
     }
 }

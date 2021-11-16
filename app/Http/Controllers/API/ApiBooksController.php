@@ -49,13 +49,10 @@ class ApiBooksController extends Controller
     public function show($id)
     {
         $book = Book::find($id);
-        if($book){
-            return $book;
-        }else {
-            return response()->json([
-                'message' => "book doesn't exist"
-            ]);
-        }
+
+        return response()->json([
+            'message' => "book doesn't exist"
+        ]);
     }
 
     /**
@@ -84,22 +81,10 @@ class ApiBooksController extends Controller
      */
     public function destroy($id)
     {
-        $book = Book::find($id);
-        if($book) {
-            if ($book->delete()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Book deleted successfully'
-                ]);
-            }else{
-                return response()->json([
-                    'message' => 'an error has occurred'
-                ]);
-            }
-        }else{
-            return response()->json([
-                'message' => 'book not found'
-            ]);
-        }
+        $book = Book::find($id)->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Book deleted successfully'
+        ]);
     }
 }

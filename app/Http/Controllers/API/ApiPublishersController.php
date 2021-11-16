@@ -83,22 +83,11 @@ class ApiPublishersController extends Controller
      */
     public function destroy($id)
     {
-        $publisher = Publisher::find($id);
-        if($publisher) {
-            if ($publisher->delete()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Publisher deleted successfully'
-                ]);
-            }else{
-                return response()->json([
-                    'message' => 'an error has occurred'
-                ]);
-            }
-        }else{
-            return response()->json([
-               'message' => 'publisher not found'
-            ]);
-        }
+        $publisher = Publisher::find($id)->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Publisher deleted successfully'
+        ]);
+
     }
 }

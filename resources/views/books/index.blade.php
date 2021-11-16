@@ -20,6 +20,7 @@
                         <thead class="thead-dark">
                         <tr>
                             <th>#</th>
+                            <th>Image</th>
                             <th>Name</th>
                             <th>Author</th>
                             <th>Publisher</th>
@@ -31,6 +32,14 @@
                         @foreach ($data as $key => $book)
                             <tr>
                                 <td>{{ $book->id }}</td>
+                                <td>
+                                    @if( $book->getFirstMediaUrl('BooksImages') )
+                                        <img src="{{ $book->getFirstMediaUrl('BooksImages') }}"
+                                             alt="Not Loaded Successfully" width="120px" height="100px">
+                                    @else
+                                        No Image
+                                    @endif
+                                </td>
                                 <td>{{ $book->name }}</td>
                                 <td>
                                     <a href=" {{route('authors.show' , $book->author_id) }}">
