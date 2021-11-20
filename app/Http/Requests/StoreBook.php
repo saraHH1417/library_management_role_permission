@@ -48,8 +48,7 @@ class StoreBook extends FormRequest
                        ->where('publisher_id' , request('publisher_id'));
                 })
                 ],
-            'quantity' => 'required',
-            'user_id' => 'required'
+            'quantity' => 'required'
         ];
     }
 

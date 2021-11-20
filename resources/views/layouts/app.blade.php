@@ -14,7 +14,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ route('mainPage') }}">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -35,7 +35,9 @@
                             </li>
                         @endif
                     @else
-                        <li><a class="nav-link" href="{{ route('activities.index') }}">Activities</a></li>
+                        @role('admin')
+                            <li><a class="nav-link" href="{{ route('activities.index') }}">Activities</a></li>
+                        @endrole
                         @can('book-list')
                             <li><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
                         @endcan
@@ -70,13 +72,23 @@
                                 </form>
                             </div>
                         </li>
+{{--                        action="{{ route('search') }}"--}}
+                        <form class="form-inline my-2 my-lg-0" method="get" action="{{ route('search') }}">
+                            <input class="form-control mr-sm-2"
+                                   id="query" name="query" type="search"
+                                   placeholder="Search" value="{{ request()->get('query') }}" aria-label="Search">
+
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
                     @endguest
                 </ul>
             </div>
         </div>
     </nav>
     <main class="py-4">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         @yield('content')
+        @yield('scripts')
     </main>
 </div>
 </body>

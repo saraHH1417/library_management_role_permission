@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
-    public function __constructor()
+    public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role:admin');
     }
-    public function index()
+    public function __invoke()
     {
 
         $activities = Activity::with('user')->latest()->get();

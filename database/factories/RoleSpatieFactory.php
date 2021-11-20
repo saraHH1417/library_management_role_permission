@@ -49,9 +49,6 @@ class RoleSpatieFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function(Role $role){
-            $permissions = Permission::where('name' , 'LIKE' , '%-list')
-                ->pluck('name' , 'id');
-            $role->syncPermissions($permissions);
 
             if($role->name === 'admin'){
                 $permissions = Permission::all()
@@ -60,16 +57,19 @@ class RoleSpatieFactory extends Factory
 
             }else if($role->name === 'creator'){
                 $permissions = Permission::where('name' , 'LIKE' , '%-create')
+                    ->orwhere('name' , 'LIKE' , '%-list')
                     ->pluck('name' , 'id');;
                 $role->syncPermissions($permissions);
 
             }else if($role->name === 'auditor'){
                 $permissions = Permission::where('name' , 'LIKE' , '%-edit')
+                    ->orwhere('name' , 'LIKE' , '%-list')
                     ->pluck('name' , 'id');;
                 $role->syncPermissions($permissions);
 
             }else if($role->name === 'deleter'){
                 $permissions = Permission::where('name' , 'LIKE' , '%-delete')
+                    ->orwhere('name' , 'LIKE' , '%-list')
                     ->pluck('name' , 'id');;
                 $role->syncPermissions($permissions);
             }

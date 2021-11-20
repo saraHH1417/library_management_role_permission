@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ApiStoreBook;
 use App\Http\Requests\StoreBook;
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 
 class BookController extends Controller
 {
-
+    use Searchable;
     public function __construct()
     {
+        $this->middleware('auth');
+        $this->middleware('role:creator|admin')->only('create' , 'store');
 //        $this->middleware('permission:book-list|book-create|book-edit|book-delete', ['only' => ['index', 'show']]);
 //        $this->middleware('permission:book-create', ['only' => ['create', 'store']]);
 //        $this->middleware('permission:book-edit', ['only' => ['edit', 'update']]);
@@ -26,8 +31,13 @@ class BookController extends Controller
      */
     public function index()
     {
-        $data = Book::latest()->get();
-        return view('books.index',compact('data'));
+        $data = Book::orderBy('id', 'desc')->get();
+        $authors = Author::orderBy('name')->get();
+        $publishers = Publisher::orderBy('name')->get();
+        return view('books.index',compact('data') , [
+            'publishers' => $publishers,
+            'authors' => $authors
+        ]);
     }
 
     /**
@@ -51,13 +61,10 @@ class BookController extends Controller
     public function store(StoreBook $request)
     {
         $validatedData  = $request->validated();
-
+        $validatedData['user_id'] = Auth::user()->id;
+        $validatedData['description'] = $request->description;
         $book = Book::create($validatedData);
-
-        if($request->hasFile('image')  && $request->file('image')->isValid()){
-            $book->addMediaFromRequest('image')->toMediaCollection('BooksImages');
-        }
-        return redirect()->route('books.show' , ['book' => $book->id])
+        return redirect()->route('books.index')
             ->with('success','Book created successfully.');
     }
 

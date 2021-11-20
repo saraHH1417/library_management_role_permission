@@ -1,4 +1,7 @@
 @extends('layouts.app')
+<script src="{{ asset('ckeditor/ckeditor.js') }}">
+
+</script>
 @section('content')
     <div class="container">
         <div class="justify-content-center">
@@ -19,8 +22,8 @@
                 </span>
                 </div>
                 <div class="card-body">
-                    {!! Form::open(['route' => 'books.store', 'method'=>'post', 'enctype' => 'multipart/form-data']) !!}
-                    <input type="hidden" name="user_id" value="{{(int) \Illuminate\Support\Facades\Auth::user()->id }}">
+                    {!! Form::open(['route' => 'books.store', 'method'=>'post','id' => 'submitform' ,'enctype' => 'multipart/form-data']) !!}
+                    @csrf
                     <div class="form-group">
                         <strong>name:</strong>
                         {!! Form::text('name',  old('name' , $book->name ?? '') , array('placeholder' => 'name','class' => 'form-control')) !!}
@@ -48,8 +51,8 @@
                         <input type="number" name="quantity">
                     </div>
                     <div class="form-group">
-                        <label for="image">Image</label>
-                        <input type="file" name="image" id="image">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="editor1" cols="30" rows="10"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     {!! Form::close() !!}
@@ -57,4 +60,14 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        // Replace the <textarea id="editor1"> with a CKEditor 4
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1' , {
+            filebrowserUploadUrl: "{{ route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
+            filebrowserUploadMethod: 'form'
+        });
+    </script>
 @endsection

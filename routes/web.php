@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.app');
-});
+Route::get('/', \App\Http\Controllers\MainPageController::class)->name('mainPage');
 
 
 Auth::routes();
@@ -41,4 +39,7 @@ Route::resource('/books' , \App\Http\Controllers\BookController::class);
 Route::resource('/authors' , \App\Http\Controllers\AuthorController::class);
 Route::resource('/publishers' , \App\Http\Controllers\PublisherController::class);
 
-Route::get('/activities' , [\App\Http\Controllers\ActivityController::class , 'index'])->name('activities.index');
+Route::get('/activities' , \App\Http\Controllers\ActivityController::class)->name('activities.index');
+
+Route::get('/search' , \App\Http\Controllers\SearchController::class)->name('search');
+Route::post('images/upload', [\App\Http\Controllers\images\ImageController::class , 'upload'])->name('ckeditor.image-upload');

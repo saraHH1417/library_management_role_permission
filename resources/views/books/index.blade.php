@@ -9,18 +9,45 @@
             @endif
             <div class="card">
                 <div class="card-header">Books
-                    @can('role-create')
+                    @role('admin|creator')
                         <span class="float-right">
                         <a class="btn btn-primary" href="{{ route('books.create') }}">New Book</a>
                     </span>
-                    @endcan
+                    @endrole
+                </div>
+                <div class="card-body">
+                    <form class="form-inline my-2 my-lg-0" method="get" action="{{ route('search') }}">
+
+                        <select class="form-control" name="author_id" id="">
+                            <option value="">All Authors</option>
+                            @foreach($authors as $author)
+                                <option value="{{ $author->id }}"
+                                    {{ $author->id == request('author_id') ? 'selected' : '' }}
+                                >{{ $author->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <select class="form-control" name="publisher_id" id="">
+                            <option value="">All Publishers</option>
+                            @foreach($publishers as $publisher)
+                                <option value="{{ $publisher->id }}"
+                                    {{ $publisher->id == request('publisher_id') ? 'selected' : '' }}
+                                >{{ $publisher->name }}</option>
+                            @endforeach
+                        </select>
+                        <input class="form-control mr-sm-2"
+                               id="query" name="query" type="search"
+                               placeholder="Search" value="{{ request()->get('query') }}" aria-label="Search">
+
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </div>
                 <div class="card-body">
                     <table class="table table-hover">
                         <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Image</th>
+                            <th>Description</th>
                             <th>Name</th>
                             <th>Author</th>
                             <th>Publisher</th>
@@ -33,12 +60,13 @@
                             <tr>
                                 <td>{{ $book->id }}</td>
                                 <td>
-                                    @if( $book->getFirstMediaUrl('BooksImages') )
-                                        <img src="{{ $book->getFirstMediaUrl('BooksImages') }}"
-                                             alt="Not Loaded Successfully" width="120px" height="100px">
-                                    @else
-                                        No Image
-                                    @endif
+{{--                                    @if( $book->getFirstMediaUrl('BooksImages') )--}}
+{{--                                        <img src="{{ $book->getFirstMediaUrl('BooksImages') }}"--}}
+{{--                                             alt="Not Loaded Successfully" width="120px" height="100px">--}}
+{{--                                    @else--}}
+{{--                                        No Image--}}
+{{--                                    @endif--}}
+                                    {!! $book->description ?? 'No Description' !!}
                                 </td>
                                 <td>{{ $book->name }}</td>
                                 <td>
