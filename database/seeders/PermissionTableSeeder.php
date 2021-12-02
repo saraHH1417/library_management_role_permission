@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\WeekDay;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -45,5 +46,11 @@ class PermissionTableSeeder extends Seeder
         foreach($data as $permission){
             Permission::create(['name' => $permission]);
         }
+
+//        $data = ['monday' , 'tuesday' , 'wednesday' , 'thursday' , 'friday' , 'saturday' , 'sunday'];
+//
+//        foreach($data as $permission){
+//            WeekDay::create(['name' => $permission]);
+//        }
     }
 }

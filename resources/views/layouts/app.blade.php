@@ -41,6 +41,7 @@
                         @can('book-list')
                             <li><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
                         @endcan
+                        <li><a class="nav-link" href="{{ route('books.deleted') }}">Deleted Books</a></li>
                         @can('author-list')
                                 <li><a class="nav-link" href="{{ route('authors.index') }}">Authors</a></li>
                         @endcan

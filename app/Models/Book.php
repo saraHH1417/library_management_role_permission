@@ -43,4 +43,10 @@ class Book extends Model implements HasMedia
     {
         return $this->belongsTo(User::all());
     }
+
+    public function weekDays()
+    {
+        return $this->belongsToMany(WeekDay::class , 'book_week_days')
+            ->withPivot('start_time' , 'end_time' , 'id');
+    }
 }

@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('content')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .types {
+            display: none;
+        }
+    </style>
     <div class="container">
         <div class="justify-content-center">
             @if (\Session::has('success'))
@@ -43,12 +49,23 @@
                     </form>
                 </div>
                 <div class="card-body">
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <strong>Opps!</strong> Something went wrong, please check below errors.<br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <table class="table table-hover">
                         <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>Description</th>
+{{--                            <th>Description</th>--}}
                             <th>Name</th>
+                            <th>Display Time</th>
                             <th>Author</th>
                             <th>Publisher</th>
                             <th>QTY</th>
@@ -59,16 +76,39 @@
                         @foreach ($data as $key => $book)
                             <tr>
                                 <td>{{ $book->id }}</td>
-                                <td>
+{{--                                <td>--}}
 {{--                                    @if( $book->getFirstMediaUrl('BooksImages') )--}}
 {{--                                        <img src="{{ $book->getFirstMediaUrl('BooksImages') }}"--}}
 {{--                                             alt="Not Loaded Successfully" width="120px" height="100px">--}}
 {{--                                    @else--}}
 {{--                                        No Image--}}
 {{--                                    @endif--}}
-                                    {!! $book->description ?? 'No Description' !!}
-                                </td>
+{{--                                    {!! $book->description ?? 'No Description' !!}--}}
+{{--                                </td>--}}
                                 <td>{{ $book->name }}</td>
+                                <td>
+                                    <select  id="select-day">
+                                        <option value="day-week" selected>Week Day</option>
+                                        @foreach( $day_weeks as $key => $day)
+                                            <option  value="{{ $day }}">{{ $day }}</option>
+                                        @endforeach
+                                    </select>
+                                    @foreach($day_weeks as $key=>$day)
+                                        {!! Form::model($book, ['route' => ['books.store-time', ['book' => $book->id , 'day' => $day]], 'method'=>'POST',
+                                                'class' => 'types' , 'id' => $day]) !!}
+                                            <br>
+                                            Start Time:<input name="start_time" type="time"
+                                                       value="{{ $request->start_time ?? '' }}">
+                                            <br>
+                                            <br>
+                                            End Time: <input name="end_time" type="time"
+                                                      value="{{ $request->end_time ?? '' }}">
+                                            <br>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary">Save Time</button>
+                                        {!! Form::close() !!}
+                                    @endforeach
+                                </td>
                                 <td>
                                     <a href=" {{route('authors.show' , $book->author_id) }}">
                                         {{ $book->author->name }}
@@ -99,4 +139,11 @@
             </div>
         </div>
     </div>
+    <script>
+        $("#select-day").on("change", function() {
+            let val = $(this).val();
+            $(".types").hide().find('input:text').val(''); // hide and empty
+            if (val) $("#" + val).show();
+        });
+    </script>
 @endsection
